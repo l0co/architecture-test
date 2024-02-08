@@ -16,7 +16,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  * @author Lukasz Frankowski
  */
 @Service
-class OvenService implements OvenPort { // nobody will use this class for dependency injection because it's protected, please use port
+public class OvenService {
 
     @Autowired private Repository ovenRepository;
 
@@ -26,7 +26,6 @@ class OvenService implements OvenPort { // nobody will use this class for depend
      * Hexagonal port to oven service is presented by the public interface here
      **********************************************************************************************************/
 
-    @Override
     public Oven create(OvenBuilder builder) {
         Oven oven = builder.build();
         freeOvens.add(oven);
@@ -34,7 +33,6 @@ class OvenService implements OvenPort { // nobody will use this class for depend
         return oven;
     }
 
-    @Override
     public void bake(@NonNull Pizza pizza) {
         Oven oven = freeOvens.poll();
         if (oven == null)
