@@ -1,6 +1,7 @@
 package com.lifeinide.architecture.module.order;
 
 import com.lifeinide.architecture.infra.Repository;
+import com.lifeinide.architecture.integration.BankIntegrationService;
 import com.lifeinide.architecture.integration.UpsIntegrationService;
 import com.lifeinide.architecture.module.order.Order.OrderBuilder;
 import com.lifeinide.architecture.module.oven.OvenService;
@@ -20,6 +21,7 @@ public class OrderService {
     @Autowired private PizzaService pizzaService;
     @Autowired private OvenService ovenService;
     @Autowired private UpsIntegrationService upsIntegrationService;
+    @Autowired private BankIntegrationService bankIntegrationService;
 
     public Order create(@NonNull OrderBuilder builder) {
         Order order = builder.build();
@@ -31,7 +33,9 @@ public class OrderService {
         if (order.getStatus() != OrderStatus.SUBMITTED)
             throw new RuntimeException("Order is not submitted");
 
-        // TODOLF check payment
+        if (!bankIntegrationService.isConfirmedPayment(order))
+            throw new RuntimeException("Order payment is not confirmed");
+
         order.pay();
     }
 
