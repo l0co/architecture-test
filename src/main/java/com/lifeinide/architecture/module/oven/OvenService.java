@@ -1,7 +1,11 @@
 package com.lifeinide.architecture.module.oven;
 
+import com.lifeinide.architecture.infra.Repository;
+import com.lifeinide.architecture.module.oven.Oven.OvenBuilder;
 import com.lifeinide.architecture.module.pizza.Pizza;
+import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -12,22 +16,39 @@ import java.util.concurrent.ArrayBlockingQueue;
  * @author Lukasz Frankowski
  */
 @Service
-public class OvenService {
+class OvenService implements OvenPort { // nobody will use this class for dependency injection because it's protected, please use port
+
+    @Autowired private Repository ovenRepository;
 
     private Queue<Oven> freeOvens = new ArrayBlockingQueue<>(100);
 
-    public Oven create() {
-        Oven oven = Oven.builder()
-            .build();
+    /**********************************************************************************************************
+     * Hexagonal port to oven service is presented by the public interface here
+     **********************************************************************************************************/
+
+    @Override
+    public Oven create(OvenBuilder builder) {
+        Oven oven = builder.build();
         freeOvens.add(oven);
+        ovenRepository.save(oven);
         return oven;
     }
 
+    @Override
     public void bake(@NonNull Pizza pizza) {
         Oven oven = freeOvens.poll();
         if (oven == null)
             throw new RuntimeException("No free ovens");
         bake(oven, pizza);
+    }
+
+    /**********************************************************************************************************
+     * Not exposed, module internals
+     **********************************************************************************************************/
+
+    @PostConstruct
+    private void init() {
+        freeOvens.addAll(ovenRepository.findFreeOvens());
     }
 
     @SneakyThrows

@@ -25,7 +25,7 @@ public class PizzaType {
     private BigDecimal price;
 
     @Builder
-    public PizzaType(String name, BigDecimal price) {
+    private PizzaType(String name, BigDecimal price) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.price = price;

@@ -22,7 +22,7 @@ public class Pizza {
     private Order order;
 
     @Builder
-    public Pizza(Order order) {
+    private Pizza(Order order) {
         this.id = UUID.randomUUID();
         this.order = order;
         this.type = order.getPizzaType();

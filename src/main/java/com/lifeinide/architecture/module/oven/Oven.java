@@ -26,7 +26,7 @@ public class Oven {
     private Pizza currentPizza;
 
     @Builder
-    public Oven() {
+    private Oven() {
         this.status = OverStatus.FREE;
     }
 

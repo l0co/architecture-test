@@ -31,7 +31,7 @@ public class Order {
     private Pizza pizza;
 
     @Builder
-    public Order(User user, PizzaType pizzaType) {
+    private Order(User user, PizzaType pizzaType) {
         this.id = UUID.randomUUID();
         this.user = user;
         this.pizzaType = pizzaType;
