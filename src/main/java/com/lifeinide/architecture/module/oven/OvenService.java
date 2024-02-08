@@ -14,12 +14,6 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
- * Hexagonal port to oven service is presented by the public interface here
- * - only method valid to use externally are exposed
- * - the rest is hidden
- * - Oven entity is exposed, but it doesn't expose any "write" operations because they are invalid outside the module
- * - but we don't have to introduce any DTO because Oven entity still allows to get its all data by getters
- * 
  * @author Lukasz Frankowski
  */
 @Service
