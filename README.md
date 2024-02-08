@@ -10,7 +10,7 @@
 ## Architecture requirements
 
 1. Split to modules.
-2. Modules expose interfaces which can be used from other modules with only valid methods, while not expose methods.
+2. Modules expose methods that can be **really** used from other modules, while does not expose methods that should not be used externally (because of existense of other "valid" method - this refers to both: entities (domain) and services).
 3. Everything is single-threaded, we don't work on multithreading problems here.
 
 ### Some architecture refs
