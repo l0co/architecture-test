@@ -17,9 +17,9 @@
 
 1. Standard and classic *clean* service architecture
 2. Hexagonal
-3. Domain driver
+3. Domain driven (DDD)
 
-(this is soppused to be a mixin of all best practices from all mentioned)
+(this is supposed to be a mixin of all best practices from all mentioned above)
 
 ## Some final thoughts
 
