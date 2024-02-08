@@ -1,6 +1,7 @@
 package com.lifeinide.architecture.module.oven;
 
 import com.lifeinide.architecture.infra.Repository;
+import com.lifeinide.architecture.integration.DroneIntegrationService;
 import com.lifeinide.architecture.module.oven.Oven.OvenBuilder;
 import com.lifeinide.architecture.module.pizza.Pizza;
 import jakarta.annotation.PostConstruct;
@@ -13,22 +14,22 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
+ * Hexagonal port to oven service is presented by the public interface here
+ * - only method valid to use externally are exposed
+ * - the rest is hidden
+ * - Oven entity is exposed, but it doesn't expose any "write" operations because they are invalid outside the module
+ * - but we don't have to introduce any DTO because Oven entity still allows to get its all data by getters
+ * 
  * @author Lukasz Frankowski
  */
 @Service
 public class OvenService {
 
     @Autowired private Repository ovenRepository;
+    @Autowired private BakingService bakingService;
+    @Autowired private DroneIntegrationService droneIntegrationService;
 
     private Queue<Oven> freeOvens = new ArrayBlockingQueue<>(100);
-
-    /**********************************************************************************************************
-     * Hexagonal port to oven service is presented by the public interface here
-     * - only method valid to use externally are exposed
-     * - the rest is hidden
-     * - Oven entity doesn't expose any "write" operations because they are invalid outside the module
-     * - but we don't have to introduce any DTO because Oven entity still allows to get its all data by getters
-     **********************************************************************************************************/
 
     public Oven create(OvenBuilder builder) {
         Oven oven = builder.build();
@@ -44,10 +45,6 @@ public class OvenService {
         bake(oven, pizza);
     }
 
-    /**********************************************************************************************************
-     * Not exposed, module internals
-     **********************************************************************************************************/
-
     @PostConstruct
     private void init() {
         freeOvens.addAll(ovenRepository.findFreeOvens());
@@ -61,12 +58,11 @@ public class OvenService {
     }
 
     private void doBake(@NonNull Oven oven) {
-        /* TODO implement baking
-        *   1. send drone to insert pizza into oven
-        *   2. turn on oven with oven webservice
-        *   3. wait 10 min
-        *   4. turn off over with over webservice
-        *   5. send drone to move pizza from oven to delivery room */
+        droneIntegrationService.sendDrone(oven.getCurrentPizza(), "preparationRoom", oven);
+        bakingService.turnOnOvenWithOvenWebservice(oven);
+        bakingService.waitUntilBaked(oven);
+        bakingService.turnOffOvenWithOvenWebservice(oven);
+        droneIntegrationService.sendDrone(oven.getCurrentPizza(), oven, "deliveryRoom");
     }
 
 }
