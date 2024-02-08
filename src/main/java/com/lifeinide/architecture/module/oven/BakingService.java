@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 class BakingService {
 
-    public void turnOnOvenWithOvenWebservice(@NonNull Oven oven) {
+    public void turnOnOvenWithOvenWebserviceAndWait(@NonNull Oven oven) {
         // TODO implement BakingService.turnOnOvenWithOvenWebservice()
     }
 
@@ -24,7 +24,7 @@ class BakingService {
         Thread.sleep(10*60*1000);
     }
 
-    public void turnOffOvenWithOvenWebservice(@NonNull Oven oven) {
+    public void turnOffOvenWithOvenWebserviceAndWait(@NonNull Oven oven) {
         // TODO implement BakingService.turnOffOvenWithOvenWebservice()
     }
 

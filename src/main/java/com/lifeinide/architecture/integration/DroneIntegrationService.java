@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DroneIntegrationService {
 
-    public void sendDrone(@NonNull Pizza pizza, Object from, Object to) {
+    public void sendDroneAndWait(@NonNull Pizza pizza, Object from, Object to) {
         // TODO implement DroneIntegrationService.sendDrone()
     }
 

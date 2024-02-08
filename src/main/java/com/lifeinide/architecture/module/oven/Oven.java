@@ -36,14 +36,14 @@ public class Oven {
 
     // not exposed externally because somebody can think this is right method to start baking
     // while real baking is done in a service, this is only the status marker
-    protected void startBaking(@NonNull Pizza pizza) {
+    void startBaking(@NonNull Pizza pizza) {
         setStatus(OverStatus.BUSY);
         setCurrentPizza(pizza);
     }
 
     // not exposed externally because somebody can think this is right method to stop baking
     // while real baking is done in a service, this is only the status marker
-    protected void finishBaking() {
+    void stopBaking() {
         setStatus(OverStatus.FREE);
         setCurrentPizza(null);
     }

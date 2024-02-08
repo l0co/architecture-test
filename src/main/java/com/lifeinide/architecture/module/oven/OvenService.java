@@ -53,12 +53,12 @@ public class OvenService {
     @SneakyThrows
     private void bake(@NonNull Oven oven, @NonNull Pizza pizza) {
         oven.startBaking(pizza);
-        droneIntegrationService.sendDrone(oven.getCurrentPizza(), "preparationRoom", oven);
-        bakingService.turnOnOvenWithOvenWebservice(oven);
+        droneIntegrationService.sendDroneAndWait(oven.getCurrentPizza(), "preparationRoom", oven);
+        bakingService.turnOnOvenWithOvenWebserviceAndWait(oven);
         bakingService.waitUntilBaked(oven);
-        bakingService.turnOffOvenWithOvenWebservice(oven);
-        droneIntegrationService.sendDrone(oven.getCurrentPizza(), oven, "deliveryRoom");
-        oven.finishBaking();
+        bakingService.turnOffOvenWithOvenWebserviceAndWait(oven);
+        droneIntegrationService.sendDroneAndWait(oven.getCurrentPizza(), oven, "deliveryRoom");
+        oven.stopBaking();
     }
 
 }
