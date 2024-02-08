@@ -6,5 +6,4 @@ package com.lifeinide.architecture.module.oven;
 public enum OverStatus {
     FREE,
     BUSY,
-    DISABLED
 }
