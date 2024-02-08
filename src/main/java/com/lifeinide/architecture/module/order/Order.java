@@ -40,11 +40,23 @@ public class Order {
         this.status = OrderStatus.PAID;
     }
 
-    // not exposed externally because somebody can think this is right method to pay
-    // while real baking is done in a service, this is only the status marker
-    void startBaking(@NonNull Pizza pizza) {
+    // not exposed externally because somebody can think this is right method to start order
+    // while real starting order is done in a service, this is only the status marker
+    void start(@NonNull Pizza pizza) {
         this.pizza = pizza;
         this.status = OrderStatus.IN_PROGRESS;
+    }
+
+    // not exposed externally because somebody can think this is right method to finish order
+    // while real finishing order is done in a service, this is only the status marker
+    void done() {
+        this.status = OrderStatus.DONE;
+    }
+
+    // not exposed externally because somebody can think this is right method to send order
+    // while real sending order is done in a service, this is only the status marker
+    void send() {
+        this.status = OrderStatus.SENT;
     }
 
 }
