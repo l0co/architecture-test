@@ -30,11 +30,15 @@ public class OrderService {
         order.pay();
     }
 
-    public void bake(@NonNull Order order) {
+    /**
+     * @return Baked pizza
+     */
+    public Pizza bake(@NonNull Order order) {
         Pizza pizza = pizzaService.create(Pizza.builder()
             .order(order));
         order.startBaking(pizza);
         ovenService.bake(pizza);
+        return pizza;
     }
 
 }
