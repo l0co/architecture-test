@@ -10,7 +10,7 @@
 ## Architecture requirements
 
 1. Split to modules.
-2. Modules expose methods that can be **really** used from other modules, while **does not expose** methods that should not be used externally (hecagonal architecture paradigm).      
+2. Modules expose methods that can be **really** used from other modules, while **does not expose** methods that should not be used externally (hexagonal architecture *port* paradigm).     
 3. Everything is single-threaded, we don't work on multithreading problems here.
 
 ### Some architecture refs
@@ -27,6 +27,7 @@
 2. Entities can contain some "domain logic" and it's OK (DDD) until this logic is package protected and can't be used freely outside a module (eg. `Oven.startBaking()`).
 3. Modules expose only public part of service(s) interface which is supposed to be used externally (hexagonal/port, eg: `OvenService.bake(Pizza)`), and the rest is hidden and internal (eg: `OvenService.bake(Oven, Pizza)`).
 4. Modules can contain more internal modules which we can be hidden with package-visible classes (eg: `BakingService`)
-5. As a result
+5. Alternatively, we could structure module from internal non-exposed services and one or many hexagonal *port* beans, however I think with the current structure the paradigm is preserved as well.
+6. As a result
    - External (code) user of a module can only call appropriate methods and shouldn't make any mistakes.
    - DDD can do the pure domain-logic work.
